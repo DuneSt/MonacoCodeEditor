@@ -16,5 +16,9 @@ MonacoSimpleDemo class >> title [
 
 { #category : #rendering }
 MonacoSimpleDemo >> renderMonacoComponentOn: html [
-	html render: MonacoComponent new
+	html
+		render:
+			(MonacoComponent
+				code: (Collection >> #sum:) sourceCode
+				language: MonacoLanguage smalltalk)
 ]

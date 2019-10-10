@@ -11,7 +11,6 @@ Class {
 MonacoDemoRoot class >> initialize [
 	"WAAdmin applicationDefaults removeParent: WADevelopmentConfiguration instance."
 	(WAAdmin register: self asApplicationAt: 'MonacoDemo')
-		addLibrary: MonacoFileLibrary;
 		addLibrary: JQDeploymentLibrary
 ]
 
@@ -208,7 +207,8 @@ MonacoDemoRoot >> updateRoot: anHtmlRoot [
 	anHtmlRoot link
 		beStylesheet;
 		url: 'https://fonts.googleapis.com/css?family=Roboto'.
-	anHtmlRoot
-		javascript url: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs/loader.js'.
+	anHtmlRoot javascript
+		url:
+			'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs/loader.js'.
 	anHtmlRoot title: 'Monaco Demo - ' , self class version
 ]
