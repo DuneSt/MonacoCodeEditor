@@ -51,7 +51,7 @@ MonacoComponent >> renderContentOn: html [
 							'require.config({ paths: { ''vs'': ''https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs'' }});
 					require([''https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs/editor/editor.main''], function() {});
 ');
-				text: [ :stream | 200 milliseconds wait. stream nextPutAll: self code ];
+				text: [ :stream | 200 milliseconds wait. stream nextPutAll: self code value ];
 				onSuccess:
 					'monaco.editor.create(document.getElementById(''container''), {
             value: arguments[0],
