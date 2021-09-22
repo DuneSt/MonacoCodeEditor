@@ -3,9 +3,10 @@ Class {
 	#superclass : #WAComponent,
 	#instVars : [
 		'code',
-		'language'
+		'language',
+		'waitingMessage'
 	],
-	#category : #MonacoCodeEditor
+	#category : #'MonacoCodeEditor-Core'
 }
 
 { #category : #'instance creation' }
@@ -26,6 +27,21 @@ MonacoComponent >> code: anObject [
 	code := anObject
 ]
 
+{ #category : #rendering }
+MonacoComponent >> defaultWaitingHtml [
+	^ [ :html | 
+	html div
+		class: 'tlWaiting';
+		with: [ 
+					html image
+						style: 'height: 50px; width: 50px;';
+						url: (CYSFileLibrary urlOf: 'cog.gif').
+					html heading
+						level1;
+						with: 'Please wait, loading in progress' ];
+		yourself ]
+]
+
 { #category : #accessing }
 MonacoComponent >> language [
 	^ language
@@ -40,23 +56,21 @@ MonacoComponent >> language: anObject [
 MonacoComponent >> renderContentOn: html [
 	| component |
 	component := html div
-		id: 'container';
-		style: 'width:100%;height:600px;border:1px solid grey;'.
-	html document
-		addLoadScript:
-			(html jQuery ajax
-				onBeforeSend:
-					(JSStream
-						on:
-							'require.config({ paths: { ''vs'': ''https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs'' }});
-					require([''https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.15.6/min/vs/editor/editor.main''], function() {});
-');
-				text: [ :stream | 200 milliseconds wait. stream nextPutAll: self code value ];
-				onSuccess:
-					'monaco.editor.create(document.getElementById(''container''), {
-            value: arguments[0],
-            language: ''' , self language monacoCode
-						,
-							'''
-        })')
+		class: 'monaco-container';
+		style: 'width:100%;height:600px;border:1px solid grey;';
+		attributeAt: #'data-language' put: self language name;
+		yourself.
+	self code
+		ifNotNil: [ component attributeAt: #'data-code' put: self code ].
+	component with: [ self waitingMessage value: html ]
+]
+
+{ #category : #rendering }
+MonacoComponent >> waitingMessage [
+	^ waitingMessage ifNil: [ self defaultWaitingHtml ]
+]
+
+{ #category : #rendering }
+MonacoComponent >> waitingMessage: anObject [
+	waitingMessage := anObject
 ]

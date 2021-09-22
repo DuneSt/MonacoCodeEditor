@@ -11,7 +11,8 @@ Class {
 MonacoDemoRoot class >> initialize [
 	"WAAdmin applicationDefaults removeParent: WADevelopmentConfiguration instance."
 	(WAAdmin register: self asApplicationAt: 'MonacoDemo')
-		addLibrary: JQDeploymentLibrary
+		addLibrary: JQDeploymentLibrary;
+		addLibrary: MonacoFileLibrary 
 ]
 
 { #category : #versions }

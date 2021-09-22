@@ -12,12 +12,20 @@ BaselineOfMonacoCodeEditor >> baseline: spec [
 		do: [
 			"Dependencies"
 			self
-				seaside3: spec.
+				seaside3: spec;
+				gitBridge: spec.
 			
 			"Packages"
 			spec
 				package: 'MonacoCodeEditor' with: [ spec requires: #('Seaside3') ];
 				package: 'MonacoCodeEditor-Demo' with: [ spec requires: #('MonacoCodeEditor') ] ].
+]
+
+{ #category : #dependencies }
+BaselineOfMonacoCodeEditor >> gitBridge: spec [
+	spec
+    	baseline: 'GitBridge'
+    	with: [ spec repository: 'github://jecisc/GitBridge:v1.x.x/src' ]
 ]
 
 { #category : #dependencies }
