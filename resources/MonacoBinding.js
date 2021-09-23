@@ -8,20 +8,45 @@ window.addEventListener("load", () => {
 })
 
 class MonacoBinding {
+  static editorsByIds = new Map()
+
   static initEditors() {
     const containers = document.getElementsByClassName("monaco-container")
     for (let container of containers) {
-      console.log(containers, container)
-      container.innerHTML = ""
-      monaco.editor.create(container, {
-        value: container.dataset.code,
-        language: container.dataset.language || "markdown"
+      let editorElement = container.getElementsByClassName("monaco-container-editor")[0]
+      editorElement.innerHTML = ""
+      let editor = monaco.editor.create(editorElement, {
+        value: editorElement.dataset.code,
+        language: editorElement.dataset.language || "markdown"
       })
+      this.editorsByIds.set(container, editor)
     }
   }
 
-  saveContentFor(containerElement) {
-    console.log(containerElement)
+  static getContentFor(saveButtonElement) {
+    let containerElement = saveButtonElement.parentElement
+    let editor = this.editorsByIds.get(containerElement)
+    if(editor) {
+      return editor.getValue()
+    } else {
+      console.error(new Error("editor not found"), {containerElement})
+    }
+  }
+
+  static save(saveButtonElement) {
+    document.body.style.cursor = "progress"
+    saveButtonElement.style.cursor = "not-allowed"
+    return this.getContentFor(saveButtonElement)
+  }
+
+  static saveCompleted(saveButtonElement) {
+    document.body.style.cursor = "default"
+    saveButtonElement.style.cursor = "default"
+  }
+
+  static saveFailed(saveButtonElement) {
+    document.body.style.cursor = "default"
+    saveButtonElement.style.cursor = "default"
   }
 
 }

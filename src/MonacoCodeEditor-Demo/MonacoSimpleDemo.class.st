@@ -6,7 +6,7 @@ Class {
 
 { #category : #accessing }
 MonacoSimpleDemo class >> description [
-	^ 'TODO'
+	^ 'A minimal example'
 ]
 
 { #category : #accessing }
